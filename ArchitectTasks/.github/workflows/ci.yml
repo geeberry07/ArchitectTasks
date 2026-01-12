@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: macos-14
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Select Xcode
+      run: sudo xcode-select -s /Applications/Xcode_15.2.app
+    
+    - name: Build
+      run: swift build -v
+    
+    - name: Run Tests
+      run: swift test -v
+    
+    - name: Build Release
+      run: swift build -c release
+
+  self-analysis:
+    runs-on: macos-14
+    needs: build
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Select Xcode
+      run: sudo xcode-select -s /Applications/Xcode_15.2.app
+    
+    - name: Build CLI
+      run: swift build -c release --product architect-cli
+    
+    - name: Self-Analysis (CI Mode)
+      run: |
+        .build/release/architect-cli ci . --policy moderate || echo "Issues found (expected for demo)"
+    
+    - name: Analyze Test Fixtures
+      run: |
+        .build/release/architect-cli analyze TestFixtures
+
+  lint:
+    runs-on: macos-14
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Check formatting
+      run: |
+        # Add swiftformat check when configured
+        echo "Formatting check placeholder"

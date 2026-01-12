@@ -1,0 +1,61 @@
+{
+  "name": "Team Policy",
+  "description": "Example team policy for ArchitectTasks",
+  "version": "1.0",
+  "rules": [
+    {
+      "condition": {
+        "type": "intentCategory",
+        "value": "documentation"
+      },
+      "decision": "allow",
+      "reason": "Documentation changes are always safe"
+    },
+    {
+      "condition": {
+        "type": "filePattern",
+        "value": "*Tests.swift"
+      },
+      "decision": "allow",
+      "reason": "Test file changes are safe"
+    },
+    {
+      "condition": {
+        "type": "intentCategory",
+        "value": "architecture"
+      },
+      "decision": "deny",
+      "reason": "Architecture changes require team review"
+    },
+    {
+      "condition": {
+        "type": "all",
+        "conditions": [
+          {
+            "type": "scopeType",
+            "value": "file"
+          },
+          {
+            "type": "confidenceAbove",
+            "value": 0.8
+          },
+          {
+            "type": "maxSteps",
+            "value": 3
+          }
+        ]
+      },
+      "decision": "allow",
+      "reason": "High-confidence, small-scope changes"
+    },
+    {
+      "condition": {
+        "type": "scopeType",
+        "value": "project"
+      },
+      "decision": "deny",
+      "reason": "Project-wide changes need review"
+    }
+  ],
+  "defaultDecision": "requireHuman"
+}

@@ -1,0 +1,16 @@
+{
+  "name": "CI Strict",
+  "description": "Strict policy for CI - flags all issues without auto-approval",
+  "version": "1.0",
+  "rules": [
+    {
+      "condition": {
+        "type": "confidenceBelow",
+        "value": 0.5
+      },
+      "decision": "deny",
+      "reason": "Low confidence findings are noise"
+    }
+  ],
+  "defaultDecision": "requireHuman"
+}
