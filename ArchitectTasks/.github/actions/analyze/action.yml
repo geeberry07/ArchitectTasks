@@ -1,0 +1,65 @@
+name: 'ArchitectTasks Analyze'
+description: 'Analyze Swift code with ArchitectTasks'
+author: 'ArchitectTasks'
+
+inputs:
+  path:
+    description: 'Path to analyze'
+    required: false
+    default: '.'
+  policy:
+    description: 'Policy to use (conservative, moderate, permissive, strict)'
+    required: false
+    default: 'moderate'
+  fail-on-findings:
+    description: 'Fail the action if findings are detected'
+    required: false
+    default: 'false'
+  comment-on-pr:
+    description: 'Comment analysis results on PR'
+    required: false
+    default: 'true'
+
+outputs:
+  findings:
+    description: 'Number of findings'
+    value: ${{ steps.analyze.outputs.findings }}
+  tasks:
+    description: 'Number of tasks'
+    value: ${{ steps.analyze.outputs.tasks }}
+  report:
+    description: 'Path to JSON report'
+    value: ${{ steps.analyze.outputs.report }}
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Setup Swift
+      uses: swift-actions/setup-swift@v2
+      with:
+        swift-version: '5.9'
+    
+    - name: Clone ArchitectTasks
+      shell: bash
+      run: |
+        git clone --depth 1 https://github.com/yourorg/ArchitectTasks.git /tmp/architect
+        cd /tmp/architect && swift build --product architect-cli
+    
+    - name: Run Analysis
+      id: analyze
+      shell: bash
+      run: |
+        /tmp/architect/.build/debug/architect-cli ci ${{ inputs.path }} --policy ${{ inputs.policy }} --json > architect-report.json || true
+        echo "findings=$(jq '.summary.totalFindings // 0' architect-report.json)" >> $GITHUB_OUTPUT
+        echo "tasks=$(jq '.summary.totalTasks // 0' architect-report.json)" >> $GITHUB_OUTPUT
+        echo "report=architect-report.json" >> $GITHUB_OUTPUT
+    
+    - name: Check Findings
+      if: inputs.fail-on-findings == 'true'
+      shell: bash
+      run: |
+        findings=$(jq '.summary.totalFindings // 0' architect-report.json)
+        if [ "$findings" -gt 0 ]; then
+          echo "::error::Found $findings issues"
+          exit 1
+        fi

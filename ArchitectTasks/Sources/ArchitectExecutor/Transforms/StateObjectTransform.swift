@@ -70,6 +70,7 @@ public enum TransformError: Error, Sendable {
     case parseError(String)
     case unsupportedIntent(String)
     case multipleMatches(String, count: Int)
+    case transformFailed(String)
 }
 
 // MARK: - StateObject Transform (Deterministic)

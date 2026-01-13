@@ -27,6 +27,9 @@ let package = Package(
         
         // Menu Bar App (macOS only)
         .executable(name: "ArchitectMenuBar", targets: ["ArchitectMenuBar"]),
+        
+        // Language Server
+        .executable(name: "architect-lsp", targets: ["ArchitectLSP"]),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-syntax.git", exact: "509.0.0"),
@@ -75,7 +78,8 @@ let package = Package(
         // CLI executable
         .executableTarget(
             name: "architect-cli",
-            dependencies: ["ArchitectHost"]
+            dependencies: ["ArchitectHost"],
+            swiftSettings: [.unsafeFlags(["-parse-as-library"])]
         ),
         
         // Menu Bar App (macOS only)
@@ -83,6 +87,13 @@ let package = Package(
             name: "ArchitectMenuBar",
             dependencies: ["ArchitectHost"],
             path: "Sources/ArchitectMenuBar"
+        ),
+        
+        // Language Server Protocol
+        .executableTarget(
+            name: "ArchitectLSP",
+            dependencies: ["ArchitectHost"],
+            path: "Sources/ArchitectLSP"
         ),
         
         // Tests

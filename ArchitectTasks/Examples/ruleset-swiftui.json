@@ -1,0 +1,83 @@
+{
+  "id": "swiftui-focused-ruleset",
+  "name": "SwiftUI Focused Ruleset",
+  "description": "Configuration optimized for SwiftUI projects with emphasis on property wrappers and view patterns",
+  "version": "1.0.0",
+  "rules": {
+    "swiftui.missing-state-object": {
+      "enabled": true,
+      "severity": "error",
+      "parameters": {},
+      "messageTemplate": "Property '{property}' should use @StateObject for owned ObservableObject instances",
+      "tags": ["swiftui", "memory", "property-wrapper"]
+    },
+    "swiftui.missing-observed-object": {
+      "enabled": true,
+      "severity": "error",
+      "parameters": {},
+      "messageTemplate": "Property '{property}' should use @ObservedObject for injected ObservableObject instances",
+      "tags": ["swiftui", "property-wrapper"]
+    },
+    "swiftui.missing-binding": {
+      "enabled": true,
+      "severity": "warning",
+      "parameters": {},
+      "tags": ["swiftui", "property-wrapper"]
+    },
+    "complexity.long-function": {
+      "enabled": true,
+      "severity": "info",
+      "parameters": {
+        "maxLines": 60
+      },
+      "tags": ["complexity"]
+    },
+    "complexity.deep-nesting": {
+      "enabled": true,
+      "severity": "info",
+      "parameters": {
+        "maxDepth": 5
+      },
+      "tags": ["complexity"]
+    },
+    "security.force-unwrap": {
+      "enabled": true,
+      "severity": "warning",
+      "parameters": {},
+      "tags": ["security"]
+    },
+    "security.hardcoded-secret": {
+      "enabled": true,
+      "severity": "error",
+      "parameters": {},
+      "tags": ["security"]
+    },
+    "naming.type-case": {
+      "enabled": false,
+      "severity": "info",
+      "parameters": {},
+      "tags": ["naming"]
+    },
+    "naming.variable-case": {
+      "enabled": false,
+      "severity": "info",
+      "parameters": {},
+      "tags": ["naming"]
+    }
+  },
+  "globalSettings": {
+    "minimumSeverity": "info",
+    "maxFindingsPerFile": 20,
+    "maxTotalFindings": null,
+    "failOnError": true,
+    "failOnCritical": true,
+    "parallelAnalysis": true
+  },
+  "includePatterns": ["**/*.swift"],
+  "excludePatterns": [
+    "**/.build/**",
+    "**/DerivedData/**",
+    "**/*.generated.swift",
+    "**/Preview Content/**"
+  ]
+}

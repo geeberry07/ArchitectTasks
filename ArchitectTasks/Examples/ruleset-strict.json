@@ -1,0 +1,82 @@
+{
+  "id": "team-strict-ruleset",
+  "name": "Team Strict Ruleset",
+  "description": "Strict configuration for production codebases with elevated security and complexity checks",
+  "version": "1.0.0",
+  "rules": {
+    "security.force-unwrap": {
+      "enabled": true,
+      "severity": "error",
+      "parameters": {},
+      "tags": ["security", "crash-prevention"]
+    },
+    "security.force-try": {
+      "enabled": true,
+      "severity": "error",
+      "parameters": {},
+      "tags": ["security", "crash-prevention"]
+    },
+    "security.hardcoded-secret": {
+      "enabled": true,
+      "severity": "critical",
+      "parameters": {
+        "patterns": ["password", "secret", "api_key", "apikey", "token", "credential", "private_key", "auth_token"]
+      },
+      "tags": ["security", "secrets"]
+    },
+    "complexity.long-function": {
+      "enabled": true,
+      "severity": "error",
+      "parameters": {
+        "maxLines": 40
+      },
+      "tags": ["complexity", "maintainability"]
+    },
+    "complexity.deep-nesting": {
+      "enabled": true,
+      "severity": "error",
+      "parameters": {
+        "maxDepth": 3
+      },
+      "tags": ["complexity", "readability"]
+    },
+    "complexity.cyclomatic": {
+      "enabled": true,
+      "severity": "error",
+      "parameters": {
+        "maxComplexity": 8
+      },
+      "tags": ["complexity", "testability"]
+    },
+    "complexity.too-many-parameters": {
+      "enabled": true,
+      "severity": "warning",
+      "parameters": {
+        "maxParameters": 4
+      },
+      "tags": ["complexity", "api-design"]
+    },
+    "swiftui.missing-state-object": {
+      "enabled": true,
+      "severity": "error",
+      "parameters": {},
+      "tags": ["swiftui", "memory"]
+    }
+  },
+  "globalSettings": {
+    "minimumSeverity": "info",
+    "maxFindingsPerFile": null,
+    "maxTotalFindings": null,
+    "failOnError": true,
+    "failOnCritical": true,
+    "parallelAnalysis": true
+  },
+  "includePatterns": ["**/*.swift"],
+  "excludePatterns": [
+    "**/.build/**",
+    "**/DerivedData/**",
+    "**/*.generated.swift",
+    "**/Pods/**",
+    "**/Carthage/**"
+  ]
+}

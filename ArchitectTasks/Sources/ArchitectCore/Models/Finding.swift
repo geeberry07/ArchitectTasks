@@ -38,6 +38,10 @@ public struct Finding: Codable, Identifiable, Sendable {
         case undocumented
         case highComplexity
         case duplicatedLogic
+        case deadCode
+        case namingViolation
+        case unusedImport
+        case securityIssue
         
         // Architecture violations
         case moduleBoundaryViolation
